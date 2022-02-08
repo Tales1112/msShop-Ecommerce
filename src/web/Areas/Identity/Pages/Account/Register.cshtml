@@ -1,5 +1,5 @@
-﻿@page
-@model RegisterModel
+﻿
+@model msShop.ViewModels.UsuarioRegistro
 
 <main id="authentication" class="inner-bottom-md">
     <div class="container">
@@ -17,22 +17,22 @@
                     <h2 class="bordered">Novo Cliente</h2>
                     <p>Cadastre-se para fazer compras na loja</p>
 
-                    <form asp-route-returnUrl="@Model.ReturnUrl" role="form" class="register-form cf-style-1" method="post">
+                    <form asp-route-returnUrl="@ViewData["ReturnUrl"]" role="form" class="register-form cf-style-1" method="post">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="field-row">
-                            <label asp-for="Input.Email"></label>
-                            <input asp-for="Input.Email" class="le-input" />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="le-input" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div><!-- /.field-row -->
                         <div class="field-row">
-                            <label asp-for="Input.Password"></label>
-                            <input asp-for="Input.Password" class="le-input" />
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <label asp-for="Senha"></label>
+                            <input asp-for="Senha" class="le-input" />
+                            <span asp-validation-for="Senha" class="text-danger"></span>
                         </div>
                         <div class="field-row">
-                            <label asp-for="Input.ConfirmPassword"></label>
-                            <input asp-for="Input.ConfirmPassword" class="le-input" />
-                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            <label asp-for="SenhaConfirmacao"></label>
+                            <input asp-for="SenhaConfirmacao" class="le-input" />
+                            <span asp-validation-for="SenhaConfirmacao" class="text-danger"></span>
                         </div>
                         <div class="field-row">
 

@@ -2,7 +2,7 @@
 
 namespace mShop.Core.Messages.Integration
 {
-    public class ResponseMessage
+    public class ResponseMessage : Message
     {
         public ValidationResult ValidationResult { get; set; }
         public ResponseMessage(ValidationResult validationResult)

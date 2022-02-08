@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetDevPack.Security.JwtExtensions;
 
 namespace mShop.WEbApi.Core.Identidade
 {
@@ -12,6 +15,22 @@ namespace mShop.WEbApi.Core.Identidade
             services.Configure<AppSettings>(appSettingsSection);
 
             var appSettings = appSettingsSection.Get<AppSettings>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(bearerOptions =>
+            {
+                bearerOptions.RequireHttpsMetadata = true;
+                bearerOptions.SaveToken = true;
+                bearerOptions.SetJwksOptions(new JwkOptions(appSettings.AutenticacaoJwksUrl));
+            });
+        }
+        public static void UseAuthConfiguration(this IApplicationBuilder app)
+        {
+            app.UseAuthentication();
+            app.UseAuthorization(); 
         }
     }
 }

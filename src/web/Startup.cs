@@ -1,16 +1,25 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using msShop.Controllers;
+using mShop.WEbApi.Core.Usuario;
 using msShop.Funcoes;
 using msShop.Funcoes.Frete;
 using msShop.Funcoes.PagSeguro;
 using msShop.Models;
+using msShop.Services;
+using msShop.Services.Handlers;
+using Polly;
+using Polly.Extensions.Http;
+using Polly.Retry;
+using System;
+using System.Net.Http;
 using WSCorreios;
+using static msShop.Extensions.CpfAnnotation;
 
 namespace msShop
 {
@@ -30,9 +39,12 @@ namespace msShop
             services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString
             ("ConexaoPadrao")));
-            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
+            //services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
+            services.AddSingleton<IValidationAttributeAdapterProvider, CpfValidationAttributeAdapterProvider>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAspNetUser, AspNetUser>();
             services.AddRazorPages();
             services.AddSession();
             services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
@@ -45,6 +57,12 @@ namespace msShop
             services.AddScoped<CartaoCreditoBLL>();
             services.AddScoped<DadosUsuarioBLL>();
             services.AddScoped<PagSeguroBLL>();
+
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddHttpClient<IAutenticacaoService, AutenticacaoService>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+
             services.AddScoped<CalcPrecoPrazoWSSoap>(options =>
             {
                 var servico = new CalcPrecoPrazoWSSoapClient(CalcPrecoPrazoWSSoapClient.EndpointConfiguration.CalcPrecoPrazoWSSoap);
@@ -82,6 +100,27 @@ namespace msShop
 
                 endpoints.MapRazorPages();
             });
+        }
+    }
+    public static class PollyExtensions
+    {
+        public static AsyncRetryPolicy<HttpResponseMessage> EsperarTentar()
+        {
+            var retry = HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .WaitAndRetryAsync(new[]
+                {
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(5),
+                    TimeSpan.FromSeconds(10),
+                }, (outcome, timespan, retryCount, context) =>
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write($"Tentando pela {retryCount} vez!");
+                    Console.ForegroundColor = ConsoleColor.White;
+                });
+
+            return retry;
         }
     }
 }

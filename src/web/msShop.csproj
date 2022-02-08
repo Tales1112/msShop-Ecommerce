@@ -28,6 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\building blocks\mShop.Core\mShop.Core.csproj" />
+    <ProjectReference Include="..\building blocks\mShop.WEbApi.Core\mShop.WEbApi.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 

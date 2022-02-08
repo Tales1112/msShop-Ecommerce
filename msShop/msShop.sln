@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32106.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "msShop", "..\src\web\msShop.csproj", "{9679B978-09FB-4FAC-9377-FBF03CC50695}"
 EndProject
@@ -19,13 +19,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{87
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{2CD4BF1A-C5A9-43FD-AB3F-DC280BCF3037}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mShop.WEbApi.Core", "..\src\building blocks\mShop.WEbApi.Core\mShop.WEbApi.Core.csproj", "{C9E253E6-E6A7-4900-A845-1F0AA4BFECE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mShop.WEbApi.Core", "..\src\building blocks\mShop.WEbApi.Core\mShop.WEbApi.Core.csproj", "{C9E253E6-E6A7-4900-A845-1F0AA4BFECE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mShop.Core", "..\src\building blocks\mShop.Core\mShop.Core.csproj", "{F6E209E1-1A38-4344-B556-47A26233F92A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mShop.Core", "..\src\building blocks\mShop.Core\mShop.Core.csproj", "{F6E209E1-1A38-4344-B556-47A26233F92A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBus", "MessageBus", "{90EFB3D7-EB0F-404A-966D-34E796EA2E22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mShop.MessageBus", "..\src\building blocks\mShop.MessageBus\mShop.MessageBus.csproj", "{FA1778B0-052B-46D4-AB64-01553011C101}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mShop.MessageBus", "..\src\building blocks\mShop.MessageBus\mShop.MessageBus.csproj", "{FA1778B0-052B-46D4-AB64-01553011C101}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cliente", "Cliente", "{E36346A1-5F15-4E6F-B90F-D4DF5F63D214}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "msShop.Cliente.API", "..\src\services\msShop.Cliente.API\msShop.Cliente.API.csproj", "{86A8D467-BF85-49E3-A5C4-FEF0CBBEB26C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,10 @@ Global
 		{FA1778B0-052B-46D4-AB64-01553011C101}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA1778B0-052B-46D4-AB64-01553011C101}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA1778B0-052B-46D4-AB64-01553011C101}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86A8D467-BF85-49E3-A5C4-FEF0CBBEB26C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86A8D467-BF85-49E3-A5C4-FEF0CBBEB26C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86A8D467-BF85-49E3-A5C4-FEF0CBBEB26C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86A8D467-BF85-49E3-A5C4-FEF0CBBEB26C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +76,8 @@ Global
 		{F6E209E1-1A38-4344-B556-47A26233F92A} = {2CD4BF1A-C5A9-43FD-AB3F-DC280BCF3037}
 		{90EFB3D7-EB0F-404A-966D-34E796EA2E22} = {CB4A1DEF-7317-4972-9AEF-B931E907E039}
 		{FA1778B0-052B-46D4-AB64-01553011C101} = {90EFB3D7-EB0F-404A-966D-34E796EA2E22}
+		{E36346A1-5F15-4E6F-B90F-D4DF5F63D214} = {7C6A137E-CC7B-48BE-AFAC-ABA818A934E0}
+		{86A8D467-BF85-49E3-A5C4-FEF0CBBEB26C} = {E36346A1-5F15-4E6F-B90F-D4DF5F63D214}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D67290D-64FF-4B02-81F8-EC5728CFD82A}

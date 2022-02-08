@@ -2,7 +2,7 @@
 
 namespace mShop.Core.Messages.Integration
 {
-    public class UsuarioRegistradoIntegrationEvent
+    public class UsuarioRegistradoIntegrationEvent : IntegrationEvent
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }

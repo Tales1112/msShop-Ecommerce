@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace msShop.Models
 {
-    public class AppDbContext : IdentityDbContext<IdentityUser> // Descomentar para criar as tabelas de membership .NetCore
+    public class AppDbContext : DbContext // Descomentar para criar as tabelas de membership .NetCore
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) :
             base(options)
@@ -218,8 +216,6 @@ namespace msShop.Models
                 comprimento = 5,
                 Peso = 1
             });
-
-
         }
     }
 }
