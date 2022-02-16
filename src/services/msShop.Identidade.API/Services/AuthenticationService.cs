@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using mShop.WEbApi.Core.Identidade;
 using mShop.WEbApi.Core.Usuario;
 using msShop.Identidade.API.Data;
 using msShop.Identidade.API.Extensions;
@@ -20,21 +20,20 @@ namespace msShop.Identidade.API.Services
     {
         public readonly SignInManager<IdentityUser> _signInManager;
         public readonly UserManager<IdentityUser> _userManager;
-        private readonly AppSettings _appSettings;
         private readonly AppTokenSettings _appTokenSettings;
         private readonly ApplicationDbContext _applicationDbContext;
-
         private readonly IJsonWebKeySetService _jwsService;
         private readonly IAspNetUser _aspNetUser;
         public AuthenticationService(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, 
-                                     AppSettings appSettings, AppTokenSettings appTokenSettings, 
-                                     ApplicationDbContext applicationDbContext)
+                                     IOptions<AppTokenSettings> appTokenSettings, IJsonWebKeySetService jsonWebKeySetService,
+                                     ApplicationDbContext applicationDbContext, IAspNetUser aspNetUser)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _appSettings = appSettings;
-            _appTokenSettings = appTokenSettings;
+            _appTokenSettings = appTokenSettings.Value;
             _applicationDbContext = applicationDbContext;
+            _aspNetUser = aspNetUser;
+            _jwsService = jsonWebKeySetService;
         }
         public async Task<UsuarioRespostaLogin> GerarJwt(string email)
         {
@@ -109,6 +108,7 @@ namespace msShop.Identidade.API.Services
             //Remove antigos RefreshTokens
             _applicationDbContext.RemoveRange(_applicationDbContext.RefreshTokens.Where(u => u.UserName == email));
 
+            await _applicationDbContext.RefreshTokens.AddAsync(refreshToken);
             await _applicationDbContext.SaveChangesAsync();
 
             return refreshToken;
@@ -119,9 +119,7 @@ namespace msShop.Identidade.API.Services
                             .FirstOrDefaultAsync(u => u.Token == refreshToken);
 
             return token != null && token.ExpirationDate.ToLocalTime() > DateTime.Now ? token : null;
-
         }
         private static long ToUnixEpochDate(DateTime date) => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
-
     }
 }

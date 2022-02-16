@@ -27,9 +27,10 @@ namespace msShop.Cliente.API
 
             Configuration = builder.Build();
         }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.RegisterServices();
             services.AddJwtConfiguration(Configuration);
             services.AddApiConfiguraton(Configuration);
             services.AddMediatR(typeof(Startup));
@@ -39,7 +40,9 @@ namespace msShop.Cliente.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             app.UseSwaggerConfiguration();
+
             app.UseApiConfiguration(env);
         }
     }

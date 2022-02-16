@@ -14,11 +14,12 @@ namespace msShop.Identidade.API.Controllers
     public class AuthController : MainController
     {
         private readonly AuthenticationService _authenticationService;
-        private readonly IMessageBus _Bus;
+        private readonly IMessageBus _Bus;  
 
-        public AuthController(AuthenticationService authenticationService)
+        public AuthController(AuthenticationService authenticationService, IMessageBus Bus)
         {
             _authenticationService = authenticationService;
+            _Bus = Bus;
         }
 
         [HttpPost("nova-conta")]
@@ -33,7 +34,7 @@ namespace msShop.Identidade.API.Controllers
                 EmailConfirmed = true
             };
 
-            var result = await _authenticationService._userManager.CreateAsync(user, usuarioRegistro.senha);
+            var result = await _authenticationService._userManager.CreateAsync(user, usuarioRegistro.Senha);
 
             if (result.Succeeded)
             {
@@ -98,7 +99,6 @@ namespace msShop.Identidade.API.Controllers
             var usuario = await _authenticationService._userManager.FindByEmailAsync(usuarioRegistro.Email);
 
             var usuarioRegistrado = new UsuarioRegistradoIntegrationEvent(Guid.Parse(usuario.Id), usuarioRegistro.Nome, usuarioRegistro.Email, usuarioRegistro.Cpf);
-            await _authenticationService._userManager.CreateAsync(usuario);
 
             try
             {

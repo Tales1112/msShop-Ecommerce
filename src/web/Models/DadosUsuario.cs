@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace msShop.Models
 {
-    public class DadosUsuario
+    public class DadosUsuario : IdentityUser
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]

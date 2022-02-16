@@ -13,8 +13,8 @@ namespace msShop.Cliente.API.Configuration
             {
                 c.SwaggerDoc("v1", new OpenApiInfo()
                 {
-                    Title = "msShop Enterprise Clientes API",
-                    Description = "Esta API faz parte do curso ASP.NET core Enterprise Applications.",
+                    Title = "NerdStore Enterprise Clientes API",
+                    Description = "Esta API faz parte do curso ASP.NET Core Enterprise Applications.",
                     Contact = new OpenApiContact() { Name = "Tales Silva", Email = "tales.trab@gmail.com" },
                     License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
                 });
@@ -36,14 +36,14 @@ namespace msShop.Cliente.API.Configuration
                         {
                             Reference = new OpenApiReference
                             {
-                                 Type = ReferenceType.SecurityScheme,
-                                 Id = "Bearer"
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
                             }
                         },
-                        new string[]{}
+                        new string[] {}
                     }
-
                 });
+
             });
         }
         public static IApplicationBuilder UseSwaggerConfiguration(this IApplicationBuilder app)

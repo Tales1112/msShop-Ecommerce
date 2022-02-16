@@ -17,18 +17,20 @@ namespace msShop.Cliente.API.Controllers
 
         public ClienteController(IClienteRepository clienteRepository, IMediatorHandler mediator, IAspNetUser user)
         {
-            _clienteRepository = clienteRepository; 
+            _clienteRepository = clienteRepository;
             _mediator = mediator;
             _user = user;
         }
+
         [HttpGet("cliente/endereco")]
         public async Task<IActionResult> ObterEndereco()
         {
             var endereco = await _clienteRepository.ObterEnderecoPorId(_user.ObterUserId());
 
-            return endereco == null ? NotFound() : CustomResponse(endereco); 
+            return endereco == null ? NotFound() : CustomResponse(endereco);
         }
-        [HttpGet("cliente/endereco")]
+
+        [HttpPost("cliente/endereco")]
         public async Task<IActionResult> AdicionarEndereco(AdicionarEnderecoCommand endereco)
         {
             endereco.ClienteId = _user.ObterUserId();
@@ -36,3 +38,4 @@ namespace msShop.Cliente.API.Controllers
         }
     }
 }
+

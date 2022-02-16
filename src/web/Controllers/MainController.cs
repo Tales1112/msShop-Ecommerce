@@ -14,6 +14,7 @@ namespace msShop.Controllers
                 {
                     ModelState.AddModelError(string.Empty, mensagem);
                 }
+                return true;
             }
             return false;
         }

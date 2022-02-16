@@ -9,11 +9,15 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace msShop.Cliente.API.Data
-{
-    public class ClientesContext : DbContext, IUnitOfWork
+{ public class ClientesContext : DbContext, IUnitOfWork
     {
         private readonly IMediatorHandler _mediatorHandler;
-        public ClientesContext(DbContextOptions<ClientesContext> options) : base(options) { }
+        public ClientesContext(DbContextOptions<ClientesContext> options, IMediatorHandler mediatorHandler) : base(options)
+        {
+            _mediatorHandler = mediatorHandler;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ChangeTracker.AutoDetectChangesEnabled = false;
+        }
 
         public DbSet<Clientes> Clientes { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
@@ -31,16 +35,17 @@ namespace msShop.Cliente.API.Data
                 .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ClientesContext).Assembly);
+       
         }
         public async Task<bool> Commit()
         {
             var sucesso = await base.SaveChangesAsync() > 0;
             if (sucesso) await _mediatorHandler.PublicarEventos(this);
-
+     
             return sucesso;
         }
     }
-    public static class MediatoExtension
+    public static class MediatorExtension
     {
         public static async Task PublicarEventos<T>(this IMediatorHandler mediator, T ctx) where T : DbContext
         {

@@ -28,7 +28,7 @@ namespace msShop.Controllers
 
             var resposta = await _autenticacaoService.Registro(usuarioRegistro);
 
-            if (!ResponsePossuiErros(resposta.ResponseResult)) return View(usuarioRegistro);
+            if (ResponsePossuiErros(resposta.ResponseResult)) return View(usuarioRegistro);
 
             await _autenticacaoService.RealizarLogin(resposta);
 
@@ -51,7 +51,7 @@ namespace msShop.Controllers
 
             var resposta = await _autenticacaoService.Login(usuarioLogin);
 
-            if (!ResponsePossuiErros(resposta.ResponseResult)) return View(usuarioLogin);
+            if (ResponsePossuiErros(resposta.ResponseResult)) return View(usuarioLogin);
 
             await _autenticacaoService.RealizarLogin(resposta);
 
