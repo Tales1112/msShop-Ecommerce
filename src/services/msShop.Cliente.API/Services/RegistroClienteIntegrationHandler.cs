@@ -23,7 +23,7 @@ namespace msShop.Cliente.API.Services
         }
         private void SetResponder()
         {
-            _bus.RespondAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(async request =>
+                _bus.RespondAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(async request =>
             await RegistrarCliente(request));
 
             _bus.AdvancedBus.Connected += OnConnect;

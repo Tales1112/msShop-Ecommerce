@@ -48,6 +48,9 @@ body {
 .navbar-top-links .dropdown-menu li a div {
   white-space: normal;
 }
+.navbar-nav button {
+    border-style: none !important;
+}
 .navbar-top-links .dropdown-messages,
 .navbar-top-links .dropdown-tasks,
 .navbar-top-links .dropdown-alerts {

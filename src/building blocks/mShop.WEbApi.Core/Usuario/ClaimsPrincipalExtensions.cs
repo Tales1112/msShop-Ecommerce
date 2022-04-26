@@ -7,16 +7,26 @@ namespace mShop.WEbApi.Core.Usuario
     {
         public static string GetUserId(this ClaimsPrincipal principal)
         {
-            if(principal == null)
+            if (principal == null)
             {
                 throw new ArgumentException(nameof(principal));
             }
             var claims = principal.FindFirst("sub");
             return claims?.Value;
         }
+        public static string GetUserName(this ClaimsPrincipal principal)
+        {
+            if (principal == null)
+            {
+                throw new ArgumentException(nameof(principal));
+            }
+            var claim = principal.FindFirst("unique_name");
+
+            return claim?.Value;
+        }
         public static string GetUserEmail(this ClaimsPrincipal principal)
         {
-            if(principal == null)
+            if (principal == null)
             {
                 throw new ArgumentException(nameof(principal));
             }
@@ -25,7 +35,7 @@ namespace mShop.WEbApi.Core.Usuario
         }
         public static string GetUserToken(this ClaimsPrincipal principal)
         {
-            if(principal == null)
+            if (principal == null)
             {
                 throw new ArgumentException(nameof(principal));
             }
@@ -34,7 +44,7 @@ namespace mShop.WEbApi.Core.Usuario
         }
         public static string GetUserRefreshToken(this ClaimsPrincipal principal)
         {
-            if(principal == null)
+            if (principal == null)
             {
                 throw new ArgumentException(nameof(principal));
             }

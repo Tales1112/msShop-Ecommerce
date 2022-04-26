@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using msShop.Identidade.API.Data;
 using msShop.Identidade.API.Extensions;
+using msShop.Identidade.API.Model;
 using NetDevPack.Security.Jwt;
 using NetDevPack.Security.Jwt.Store.EntityFrameworkCore;
 
@@ -22,7 +23,7 @@ namespace msShop.Identidade.API.Configuration
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<Usuario>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();

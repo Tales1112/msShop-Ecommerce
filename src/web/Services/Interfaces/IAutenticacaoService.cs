@@ -1,4 +1,5 @@
-﻿using msShop.ViewModels;
+﻿using mShop.Core.Communication;
+using msShop.ViewModels;
 using System.Threading.Tasks;
 
 namespace msShop.Services
@@ -9,5 +10,6 @@ namespace msShop.Services
         Task Logout();
         Task RealizarLogin(UsuarioRespostaLogin resposta);
         Task<UsuarioRespostaLogin> Registro(UsuarioRegistro usuarioRegistro);
+        Task<ResponseResult> ChangeEmail(ChangeEmailViewModel changeEmailViewModel);
     }
 }

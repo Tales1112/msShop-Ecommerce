@@ -59,6 +59,14 @@ namespace msShop.Services
             }
             return await DeserializarObjetoResponse<UsuarioRespostaLogin>(response);
         }
+        public async Task<ResponseResult> ChangeEmail(ChangeEmailViewModel changeEmailViewModel)
+        {
+            var registroContent = ObterConteudo(changeEmailViewModel);
+
+            var response = await _httpClient.PostAsync("/api/identidade/change-email", registroContent);
+
+            return await DeserializarObjetoResponse<ResponseResult>(response);
+        }
         public async Task Logout()
         {
             await _authenticationService.SignOutAsync(_user.ObterHttpContext(),

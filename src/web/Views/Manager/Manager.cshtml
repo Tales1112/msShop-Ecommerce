@@ -1,0 +1,70 @@
+﻿@model msShop.ViewModels.ClienteViewModel
+<!DOCTYPE html>
+<div class="container">
+    <div class="row">
+        <div>
+            <partial name="_MenuManager" />
+        </div>
+    </div>
+    <div class="row"></div>
+    <div class="row">
+       @* <input type="hidden" asp-for="DadosUsuario.DadosUsuarioId">
+        <input type="hidden" asp-for="DadosUsuario.UserId">
+*@
+        <form method="post">
+            <div class="row-cols-9">
+                <div class="form-group col-lg-5">
+                    <label asp-for="Nome"></label>
+                    <input asp-for="Nome" class="le-input form-control-lg" />
+                </div>
+                <div class="form-group col-lg-2">
+                    @*@Html.DropDownListFor(Model => Model.DadosUsuario.TipoDocumento, 
+                   new SelectList(ListaTipoDocumento, "ID", "TipoDocumento"),
+                   new { @class = " form-control" })*@
+                    <label asp-for="Cpf"></label>
+                    <input asp-for="Cpf" class="le-input form-control-lg" />
+                </div>
+                <div class="form-group col-lg-2">
+                    <label asp-for="DataNascimento"></label>
+                    <input asp-for="DataNascimento" class="date le-input form-control-lg" />
+                </div>
+            </div>
+            <div class="row-cols-9">
+                <div class="form-group col-lg-5">
+                    <label asp-for="Endereco.Logradouro"></label>
+                    <input asp-for="Endereco.Logradouro" class="le-input form-control-lg" />
+                </div>
+                <div class="form-group col-lg-2">
+                    <label asp-for="Endereco.Numero"></label>
+                    <input asp-for="Endereco.Numero" class="le-input form-control-lg" />
+                </div>
+                <div class="form-group col-lg-2">
+                    <label asp-for="Endereco.Complemento"></label>
+                    <input asp-for="Endereco.Complemento" class="le-input form-control-lg" />
+                </div>
+            </div>
+            <div class="row-cols-9">
+                <div class="form-group col-lg-5">
+                    <label asp-for="Endereco.Bairro"></label>
+                    <input asp-for="Endereco.Bairro" class="le-input form-control-lg" />
+                </div>
+                <div class="form-group col-lg-2">
+                    <label asp-for="Endereco.Cidade"></label>
+                    <input asp-for="Endereco.Cidade" class="le-input form-control-lg" />
+                </div>
+                <div class="form-group col-lg-2">
+                    <label asp-for="Endereco.Estado"></label>
+                    <input asp-for="Endereco.Estado" class="le-input form-control-lg" />
+                </div>
+                <div class="form-group col-lg-2">
+                    <label asp-for="Endereco.Cep"></label>
+                    <input asp-for="Endereco.Cep" class="le-input form-control-lg" />
+                </div>
+            </div>
+            <div class="row"></div>
+            <div class="buttons-holder">
+                <button type="submit" class="le-button huge">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>

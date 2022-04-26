@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using mShop.WEbApi.Core.Controllers;
 using msShop.Services;
 using msShop.ViewModels;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace msShop.Controllers
@@ -42,6 +42,7 @@ namespace msShop.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
+
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(UsuarioLogin usuarioLogin, string returnUrl = null)
@@ -55,17 +56,35 @@ namespace msShop.Controllers
 
             await _autenticacaoService.RealizarLogin(resposta);
 
-            if (string.IsNullOrEmpty(returnUrl)) return RedirectToPage("Index", "Catalogo");
+            if (string.IsNullOrEmpty(returnUrl)) return  RedirectToAction("Index", "Home");
 
             return LocalRedirect(returnUrl);
         }
-
         [HttpGet]
+        [Route("ChangeEmail")]
+        public IActionResult ChangeEmail()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Route("ChangeEmail")]
+        public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel changeEmailViewModel)
+        {
+            if (!ModelState.IsValid) return View(changeEmailViewModel);
+
+            var resposta = await _autenticacaoService.ChangeEmail(changeEmailViewModel);
+
+            if (ResponsePossuiErros(resposta)) TempData["Erros"] =
+                     ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)).ToList();
+
+            return RedirectToAction("Manager", "Manage");
+        }
+        [HttpPost]
         [Route("sair")]
         public async Task<IActionResult> Logout()
         {
             await _autenticacaoService.Logout();
-            return RedirectToAction("Index", "Catalogo");
+            return RedirectToAction("Index", "Home");
         }
 
     }

@@ -6,7 +6,7 @@ using NetDevPack.Security.Jwt.Store.EntityFrameworkCore;
 
 namespace msShop.Identidade.API.Data
 {
-    public class ApplicationDbContext : IdentityDbContext, ISecurityKeyContext
+    public class ApplicationDbContext : IdentityDbContext<Usuario>, ISecurityKeyContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
         public DbSet<SecurityKeyWithPrivate> SecurityKeys { get; set; }

@@ -13,7 +13,7 @@ namespace mShop.WEbApi.Core.Usuario
         {
             _accessor = accessor;
         }
-        public string Name => _accessor.HttpContext.User.Identity.Name;
+        public string Name => _accessor.HttpContext.User.GetUserName();
 
         public Guid ObterUserId()
         {

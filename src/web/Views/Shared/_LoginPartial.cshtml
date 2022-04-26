@@ -1,29 +1,29 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using mShop.WEbApi.Core.Usuario
+@inject IAspNetUser AppUser
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
+<ul class="navbar-nav navbar-expand-lg col-sm-12">
+    @if (AppUser.EstaAutenticado())
     {
         <li class="nav-item">
             @*<a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manager/Index" title="Manage">Olá @UserManager.GetUserName(User)!</a>*@
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manager" title="Manage">Olá @UserManager.GetUserName(User)!</a>
+            <i class="fa fa-user"> </i>
+            <a id="manage" class="nav-link text-dark" asp-controller="Manager" asp-action="Manager" title="Manage">Olá @AppUser.Name!</a>
         </li>
-        <li class="nav-item col-lg-4">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Sair</button>
+        <li class="nav-item">
+            <form  id="logoutForm" class="nav-link form-inline"asp-controller="Identidade" asp-action="Logout">
+                <button id="logout" style="padding-left:1em; border:none;"   class="nav-link btn-link text-dark ">Sair</button>
             </form>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" id="register" asp-controller="Identidade"  asp-action="Registro" >Registrar</a>
+            <a class="nav-link text-dark" id="register" asp-controller="Identidade" asp-action="Registro">Registrar</a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-controller="Identidade">Entrar</a>
+            <a class="nav-link text-dark" style="padding-left:1em" id="login" asp-controller="Identidade" asp-action="Login">Entrar</a>
+            <i class="fa fa-user"> </i>
         </li>
     }
 </ul>

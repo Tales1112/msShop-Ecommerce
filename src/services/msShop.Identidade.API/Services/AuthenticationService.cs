@@ -16,24 +16,26 @@ using System.Threading.Tasks;
 
 namespace msShop.Identidade.API.Services
 {
-    public class AuthenticationService
+    public class AuthenticationService 
     {
-        public readonly SignInManager<IdentityUser> _signInManager;
-        public readonly UserManager<IdentityUser> _userManager;
+        public readonly SignInManager<Usuario> _signInManager;
+        public readonly UserManager<Usuario> _userManager;
         private readonly AppTokenSettings _appTokenSettings;
         private readonly ApplicationDbContext _applicationDbContext;
+
         private readonly IJsonWebKeySetService _jwsService;
         private readonly IAspNetUser _aspNetUser;
-        public AuthenticationService(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, 
-                                     IOptions<AppTokenSettings> appTokenSettings, IJsonWebKeySetService jsonWebKeySetService,
-                                     ApplicationDbContext applicationDbContext, IAspNetUser aspNetUser)
+
+        public AuthenticationService(SignInManager<Usuario> signInManager, UserManager<Usuario> userManager,
+                                     IOptions<AppTokenSettings> appTokenSettings, ApplicationDbContext applicationDbContext,
+                                     IJsonWebKeySetService jwksService, IAspNetUser aspNetUser)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appTokenSettings = appTokenSettings.Value;
             _applicationDbContext = applicationDbContext;
+            _jwsService = jwksService;
             _aspNetUser = aspNetUser;
-            _jwsService = jsonWebKeySetService;
         }
         public async Task<UsuarioRespostaLogin> GerarJwt(string email)
         {
@@ -42,12 +44,12 @@ namespace msShop.Identidade.API.Services
 
             var identityClaims = await ObterClaimUsuario(claims, user);
             var encodedToken = CodificarToken(identityClaims);
-
+        
             var refreshToken = await GerarRefreshToken(email);
 
             return ObterRespostaToken(encodedToken, user, claims, refreshToken);
         }
-        private  async Task<ClaimsIdentity> ObterClaimUsuario(ICollection<Claim> claims, IdentityUser user)
+        private  async Task<ClaimsIdentity> ObterClaimUsuario(ICollection<Claim> claims, Usuario user)
         {
             var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -56,6 +58,7 @@ namespace msShop.Identidade.API.Services
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
+            claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, user.Nome));
 
             foreach (var userRole in userRoles)
             {

@@ -22,7 +22,7 @@ namespace msShop.Identidade.API.Data
         [Compare("Senha", ErrorMessage = "As senhas nao conferem")]
         public string SenhaConfirmacao { get; set; }
     }
-
+    
     public class UsuarioLogin
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
@@ -50,5 +50,11 @@ namespace msShop.Identidade.API.Data
     {
         public string Value { get; set; }
         public string Type { get; set; }
+    }
+    public class ChangeEmail
+    {
+        public string OldEmail { get; set; }
+        public string NewEmail { get; set;  }
+
     }
 }

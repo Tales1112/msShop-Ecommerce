@@ -15,6 +15,7 @@ namespace msShop.Identidade.API.Configuration
             services.AddControllers();
             services.AddScoped<AuthenticationService>();
             services.AddScoped<IAspNetUser, AspNetUser>();
+            services.AddScoped<ChangeEmailService>();
             return services;
         }
 
