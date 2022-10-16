@@ -1,29 +1,24 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace msShop.Models
+namespace msShop.Models.ViewModel
 {
-    public class Produto
+    public class ProdutoViewModel
     {
-        [Key]
-        public int ProdutoId { get; set; }
-        
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public decimal ValorBruto { get; set; }
         public decimal Preco { get; set; }
         public string ImagemUrl { get; set; }
         public string ImagemThumbnailUrl { get; set; }
-        public bool aVenda { get; set; }
+        public bool Ativo { get; set; }
         public bool emEstoque { get; set; }
         public Guid CategoriaId { get; set; }
-        public Categoria Categoria { get; set; }
         public string Slug { get; set; }
         public string Marca { get; set; }
-        public int Quantidade { get; set; }
-        public int largura { get; set; }
-        public int altura { get; set; }
-        public int comprimento { get; set; }
+        public int QuantidadeEstoque { get; set; }
+        public int Largura { get; set; }
+        public int Altura { get; set; }
+        public int Comprimento { get; set; }
         public int Peso { get; set; }
         public string UnidadeMedida { get; set; }
 

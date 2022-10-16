@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Mvc;
+using mShop.WEbApi.Core.Usuario;
+using msShop.Models;
 using msShop.Services;
 using msShop.ViewModels;
 using System.Linq;
@@ -9,9 +13,11 @@ namespace msShop.Controllers
     public class IdentidadeController : MainController
     {
         private readonly IAutenticacaoService _autenticacaoService;
-        public IdentidadeController(IAutenticacaoService autenticacaoService)
+        private readonly IAspNetUser _user;
+        public IdentidadeController(IAutenticacaoService autenticacaoService, IAspNetUser aspNetUser)
         {
             _autenticacaoService = autenticacaoService;
+            _user = aspNetUser;
         }
 
         [HttpGet]
@@ -42,7 +48,31 @@ namespace msShop.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
+        [HttpPost]
+        [Route("ExternalLogin")]
+        public  async  Task<IActionResult> ExternalLogin(string provider,string returnUrl = null)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallBack", "Identidade", new { ReturnUrl = returnUrl });
 
+            var properties = await _autenticacaoService.GetExternalLoginAuthenticationProperties(new ExternalLogin { Provider = provider, ReturnUrl = redirectUrl });
+
+            return new ChallengeResult(provider, properties);   
+        }
+
+        public async Task<IActionResult> ExternalLoginCallBack(string returnUrl = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+
+            var token = await _user.ObterHttpContext().GetTokenAsync(GoogleDefaults.AuthenticationScheme, "id_token");
+
+            var resposta = await _autenticacaoService.LoginExternal(token);
+
+            if (ResponsePossuiErros(resposta.ResponseResult)) return View();
+
+            await _autenticacaoService.RealizarLogin(resposta);
+
+            return LocalRedirect(returnUrl);
+        }
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(UsuarioLogin usuarioLogin, string returnUrl = null)

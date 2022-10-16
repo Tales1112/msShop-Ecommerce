@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using mShop.Core.Communication;
 using mShop.WEbApi.Core.Usuario;
 using msShop.Extensions;
+using msShop.Models;
 using msShop.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,35 @@ namespace msShop.Services
                 };
             }
             return await DeserializarObjetoResponse<UsuarioRespostaLogin>(response);
+        }
+        public async Task<UsuarioRespostaLogin> LoginExternal(string token)
+        {
+            var logingContent = ObterConteudo(token);
+
+            var response = await _httpClient.PostAsync("api/identidade/autenticar-external", logingContent);
+
+            if (!TratarErrosResponse(response))
+            {
+                return new UsuarioRespostaLogin
+                {
+                    ResponseResult = await DeserializarObjetoResponse<ResponseResult>(response)
+                };
+            }
+            return await DeserializarObjetoResponse<UsuarioRespostaLogin>(response);
+        }
+
+        public async Task<AuthenticationProperties> GetExternalLoginAuthenticationProperties(ExternalLogin externalLogin)
+        {
+            var content = ObterConteudo(externalLogin);
+
+            var response = await _httpClient.PostAsync("api/identidade/external-properties", content);
+
+            if (!TratarErrosResponse(response))
+            {
+                return await DeserializarObjetoResponse<AuthenticationProperties>(response);
+            }
+
+            return await DeserializarObjetoResponse<AuthenticationProperties>(response);
         }
         public async Task<UsuarioRespostaLogin> Registro(UsuarioRegistro usuarioRegistro)
         {

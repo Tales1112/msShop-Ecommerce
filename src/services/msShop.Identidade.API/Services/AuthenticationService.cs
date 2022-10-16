@@ -73,7 +73,7 @@ namespace msShop.Identidade.API.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var currentIssuer = $"{_aspNetUser.ObterHttpContext().Request.Scheme}://{_aspNetUser.ObterHttpContext().Request.Host}";
 
-            var key = _jwsService.GenerateSigningCredentials();
+            var key =  _jwsService.GenerateSigningCredentials();
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = currentIssuer,

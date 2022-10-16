@@ -19,6 +19,12 @@ namespace msShop.Identidade.API.Configuration
 
             services.AddJwksManager(options => options.Jws = JwsAlgorithm.ES256)
             .PersistKeysToDatabaseStore<ApplicationDbContext>();
+            services.AddAuthentication()
+             .AddGoogle(options =>
+             {
+                 options.ClientId = "94512361248-ob642trtokt91g95o6c9udlnuijapros.apps.googleusercontent.com";
+                 options.ClientSecret = "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";
+             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));

@@ -1,4 +1,5 @@
-﻿@model HomeViewModel
+﻿@using msShop.Models.ViewModel
+@model List<ProdutoViewModel>
 
 <div id="top-banner-and-menu">
     <div class="container">
@@ -109,7 +110,7 @@
                 <div class="tab-pane active" id="featured">
                     <div class="product-grid-holder">
 
-                        @foreach (var produto in Model.aVenda)
+                        @foreach (var produto in Model)
                         {
                             <partial name="_produtoCard" model="produto" />
                         }
@@ -121,7 +122,6 @@
                             Carregar mais produtos
                         </a>
                     </div>
-
                 </div>
             </div>
         </div>

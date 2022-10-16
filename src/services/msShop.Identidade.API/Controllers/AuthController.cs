@@ -8,6 +8,7 @@ using msShop.Identidade.API.Model;
 using msShop.Identidade.API.Services;
 using System;
 using System.Threading.Tasks;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace msShop.Identidade.API.Controllers
 {
@@ -33,7 +34,7 @@ namespace msShop.Identidade.API.Controllers
 
             var user = new Usuario
             {
-                Nome = usuarioRegistro.Nome,           
+                Nome = usuarioRegistro.Nome,
                 UserName = usuarioRegistro.Email,
                 Email = usuarioRegistro.Email,
                 EmailConfirmed = true
@@ -86,7 +87,7 @@ namespace msShop.Identidade.API.Controllers
 
             var result = await _changeEmailService.ChangeEmail(changeEmail);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return CustomResponse();
             }
@@ -117,6 +118,67 @@ namespace msShop.Identidade.API.Controllers
 
             return CustomResponse(await _authenticationService.GerarJwt(token.UserName));
         }
+        [HttpPost("external-properties")]
+        public IActionResult GetExternalLoginProperties(ExternalLogin externalLogin)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var properties = _authenticationService._signInManager.ConfigureExternalAuthenticationProperties(externalLogin.Provider, externalLogin.ReturnUrl);
+
+            return CustomResponse(properties);
+        }
+        [HttpPost("autenticar-external")]
+        public async Task<IActionResult> ExternaLogin([FromBody] string token)
+        {
+
+            Payload payload;
+            try
+            {
+                payload = await ValidateAsync(token, new ValidationSettings
+                {
+                    Audience = new[] { "94512361248-ob642trtokt91g95o6c9udlnuijapros.apps.googleusercontent.com" }
+                });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            var user = await _authenticationService._userManager.FindByLoginAsync("google", payload.Subject);
+
+            if (user != null)
+                return CustomResponse(_authenticationService.GerarJwt(user.Email));
+
+            user = await _authenticationService._userManager.FindByEmailAsync(payload.Email);
+
+            if (user is null)
+            {
+                user = new Usuario
+                {
+                    Email = payload.Email,
+                    UserName = payload.Email,
+                    Nome = payload.GivenName,
+                };
+
+                await _authenticationService._userManager.CreateAsync(user);
+            }
+            var info = new UserLoginInfo("google", payload.Subject, "GOOGLE");
+            var result = await _authenticationService._userManager.AddLoginAsync(user, info);   
+
+            if(result.Succeeded)
+                return CustomResponse(_authenticationService.GerarJwt(user.Email));
+
+
+            foreach (var erro in result.Errors)
+            {
+                AdicionarErroProcessamento(erro.Description);
+            }
+
+            return CustomResponse();
+        }
+
+    
 
         private async Task<ResponseMessage> RegistrarCliente(UsuarioRegistro usuarioRegistro)
         {

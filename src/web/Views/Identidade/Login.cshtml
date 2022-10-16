@@ -15,7 +15,6 @@
       }
     }
 </script>
-
 }
 
 
@@ -41,8 +40,9 @@
                                 <button class="btn-block btn-lg btn btn-facebook"><i class="fa fa-facebook"></i> Entre com o Facebook</button>
                             </div>
                             <div class="col-md-6">
-                                 <partial name="_LoginGooglePartial" />
-                                @* <button class="btn-block btn-lg btn btn-google"><i class="fa fa-google-plus-official"></i> Entre com o Google</button>*@
+                               <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" role="form" asp-action="ExternalLogin" asp-controller="Identidade" >
+                                       <button type="submit" name="provider" value="Google" class="btn-block btn-lg btn btn-twitter"><i class="fa fa-google"></i> Entre com o Google</button>
+                               </form>                          
                             </div>
                         </div>
                     </div>
@@ -76,10 +76,8 @@
                             <button type="submit" class="le-button huge btn-lg">Entrar</button>
                         </div><!-- /.buttons-holder -->
                     </form><!-- /.cf-style-1 -->
-
                 </section><!-- /.sign-in -->
             </div><!-- /.col -->
-
         </div><!-- /.row -->
     </div><!-- /.container -->
 </main><!-- /.authentication -->

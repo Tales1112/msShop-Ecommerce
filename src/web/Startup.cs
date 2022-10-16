@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Hosting;
 using mShop.WEbApi.Core.Usuario;
 using msShop.Extensions;
@@ -23,6 +25,7 @@ using System;
 using System.Net.Http;
 using WSCorreios;
 using static msShop.Extensions.CpfAnnotation;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace msShop
 {
@@ -44,11 +47,22 @@ namespace msShop
             ("ConexaoPadrao")));
             services.Configure<AppSettings>(Configuration);
             services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
+            services
+           .AddAuthentication(options =>
+          {
+              options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+              options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+          })
+          .AddCookie().AddOpenIdConnect(GoogleDefaults.AuthenticationScheme,GoogleDefaults.DisplayName,options =>
                 {
-                    options.LoginPath = "/login";
-                    options.AccessDeniedPath = "/erro/403";
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.ClientId = "94512361248-ob642trtokt91g95o6c9udlnuijapros.apps.googleusercontent.com";
+                    options.ClientSecret = "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";
+                    options.SaveTokens = true;
+                    options.ResponseType = OpenIdConnectResponseType.IdToken;
+                    options.CallbackPath = "/signin-google";
+                    options.Authority = "https://accounts.google.com";
+                    options.Scope.Add("email");
                 });
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
@@ -100,7 +114,6 @@ namespace msShop
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
