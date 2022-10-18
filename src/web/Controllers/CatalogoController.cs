@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using msShop.Services;
+using System.Threading.Tasks;
 
 namespace msShop.Controllers
 {
@@ -12,9 +13,14 @@ namespace msShop.Controllers
             _catalogoService = catalogoService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        [Route("")]
+        [Route("vitrine")]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var produtos = await _catalogoService.ObterTodos();
+
+            return View(produtos);
         }
     }
 }

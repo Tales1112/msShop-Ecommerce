@@ -26,6 +26,7 @@ using System.Net.Http;
 using WSCorreios;
 using static msShop.Extensions.CpfAnnotation;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Security.Authentication;
 
 namespace msShop
 {
@@ -81,6 +82,10 @@ namespace msShop
             services.AddScoped<CartaoCreditoBLL>();
             services.AddScoped<DadosUsuarioBLL>();
             services.AddScoped<PagSeguroBLL>();
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback += (sender, cert, chain, sslPolicyErrors) => { return true; };
+            clientHandler.SslProtocols = SslProtocols.Tls;
+            services.AddScoped<ICatalogoService, CatalogoService>();
 
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
             services.AddHttpClient<IAutenticacaoService, AutenticacaoService>()
@@ -118,7 +123,7 @@ namespace msShop
             {
                 endpoints.MapControllerRoute(
                     name: "Default",
-                    pattern: "{controller=Home}/{Action=Index}/{id?}"
+                    pattern: "{controller=Catalogo}/{Action=Index}/{id?}"
                     );
 
                 endpoints.MapRazorPages();

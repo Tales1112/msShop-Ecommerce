@@ -4,6 +4,7 @@ namespace msShop.Models.ViewModel
 {
     public class ProdutoViewModel
     {
+        public Guid ProdutoId { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public decimal ValorBruto { get; set; }
@@ -21,6 +22,6 @@ namespace msShop.Models.ViewModel
         public int Comprimento { get; set; }
         public int Peso { get; set; }
         public string UnidadeMedida { get; set; }
-
+        public Categoria
     }
 }

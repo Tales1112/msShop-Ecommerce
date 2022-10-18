@@ -1,4 +1,5 @@
-﻿@model Produto
+﻿@using msShop.Models.ViewModel
+@model ProdutoViewModel
 
 
                         <div class="col-sm-4 col-md-3 no-margin product-item-holder hover">
@@ -12,7 +13,7 @@
                                     <div class="title">
                                         <a asp-controller="Produto" asp-action="Detalhes" asp-route-id="@Model.ProdutoId">@Model.Nome</a>
                                     </div>
-                                    <div class="brand">@Model.Categoria.CategoriaNome</div>
+                                    <div class="brand">@Model.c.CategoriaNome</div>
                                 </div>
                                 <div class="prices">
                                     <div class="price-prev"><strike>@Model.ValorBruto.ToString("c")</strike></div>
@@ -21,7 +22,7 @@
 
                                 <div class="hover-area">
                                     <div class="add-cart-button">
-                                        <a asp-controller="Produto" asp-action="Detalhes" asp-route-id="@Model.ProdutoId" class="le-button">Detalhes</a>
+                                        <a asp-controller="Produto" asp-action="Detalhes" asp-route-id="@Model." class="le-button">Detalhes</a>
                                     </div>
                                     <div class="wish-compare">
                                         <a class="btn-add-to-wishlist" href="#">add to wishlist</a>

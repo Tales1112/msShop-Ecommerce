@@ -29,7 +29,7 @@ namespace msShop.Catalogo.API.Controllers
         [HttpGet("catalogo/produtos")]
         public async Task<List<Produto>> ObterProdutos()
         {
-            return await _produtoRepository.ObterTodos();
+            return await _produtoRepository.ObterProdutosAVenda();
         }
 
         [HttpGet("catalogo/produtos/{id}")]

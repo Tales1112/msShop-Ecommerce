@@ -4,6 +4,7 @@ using msShop.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace msShop.Services
@@ -12,14 +13,20 @@ namespace msShop.Services
     {
         private readonly HttpClient _httpClient;
 
-        public CatalogoService(HttpClient httpClient, IOptions<AppSettings> settings)
+        public CatalogoService( IOptions<AppSettings> settings)
         {
-            httpClient.BaseAddress = new Uri(settings.Value.CatalogoUrl);
-            _httpClient = httpClient;
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback += (sender, cert, chain, sslPolicyErrors) => { return true; };
+            clientHandler.SslProtocols = SslProtocols.None;
+            _httpClient = new HttpClient(clientHandler);
+            _httpClient.BaseAddress = new Uri(settings.Value.CatalogoUrl);
+           
         }
 
         public async Task<List<ProdutoViewModel>> ObterTodos()
         {
+            
+            
             var response = await _httpClient.GetAsync("/catalogo/produtos");
 
             TratarErrosResponse(response);
